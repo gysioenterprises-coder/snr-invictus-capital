@@ -1,0 +1,802 @@
+<title>SNR Invictus Capital — Capital. Strategy. Systems.</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --obsidian: #0C0F1A;
+    --steel: #1E2440;
+    --steel-mid: #2A3154;
+    --gold: #C9922B;
+    --gold-light: #E4A832;
+    --teal: #14B8A6;
+    --teal-dim: rgba(20,184,166,0.12);
+    --arctic: #F1F4F8;
+    --white: #FFFFFF;
+    --grey: #7A7F94;
+    --grey-light: #B0B5C8;
+    --text-dark: #E8ECF5;
+    --text-muted: #7A7F94;
+    --radius: 4px;
+    --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--obsidian);
+    color: var(--text-dark);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 4rem;
+    background: rgba(12,15,26,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(201,146,43,0.15);
+    transition: padding var(--transition);
+  }
+  .nav-logo {
+    display: flex; flex-direction: column; line-height: 1;
+  }
+  .nav-logo-name {
+    font-family: 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+    font-size: 1.2rem; font-weight: 700; letter-spacing: 0.12em;
+    color: var(--white); text-transform: uppercase;
+  }
+  .nav-logo-sub {
+    font-size: 0.58rem; letter-spacing: 0.28em; color: var(--gold);
+    text-transform: uppercase; margin-top: 2px;
+  }
+  .nav-links { display: flex; align-items: center; gap: 2.5rem; }
+  .nav-links a {
+    color: var(--grey-light); text-decoration: none; font-size: 0.82rem;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    transition: color var(--transition);
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta {
+    background: var(--gold); color: var(--obsidian) !important;
+    padding: 0.6rem 1.4rem; border-radius: var(--radius);
+    font-weight: 700 !important; letter-spacing: 0.06em !important;
+    transition: background var(--transition), transform var(--transition) !important;
+  }
+  .nav-cta:hover { background: var(--gold-light) !important; transform: translateY(-1px); }
+
+  /* HERO */
+  .hero {
+    position: relative; min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 8rem 4rem 5rem;
+    overflow: hidden;
+  }
+  #hero-canvas {
+    position: absolute; inset: 0; z-index: 0;
+    opacity: 0.4;
+  }
+  .hero-inner {
+    position: relative; z-index: 1;
+    max-width: 1100px; margin: 0 auto; width: 100%;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+  }
+  .hero-label {
+    font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .hero-label::before {
+    content: ''; display: block; width: 2rem; height: 1px; background: var(--teal);
+  }
+  .hero-headline {
+    font-family: 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+    font-size: clamp(2.8rem, 5vw, 4.2rem);
+    font-weight: 700; line-height: 1.1;
+    text-wrap: balance; color: var(--white);
+    margin-bottom: 1.75rem;
+  }
+  .hero-headline em {
+    font-style: normal; color: var(--gold);
+  }
+  .hero-body {
+    font-size: 1.05rem; line-height: 1.75; color: var(--grey-light);
+    max-width: 46ch; margin-bottom: 2.5rem;
+  }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--gold); color: var(--obsidian);
+    padding: 0.9rem 2rem; border-radius: var(--radius);
+    font-weight: 700; font-size: 0.88rem; letter-spacing: 0.06em;
+    text-decoration: none; text-transform: uppercase;
+    transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+    box-shadow: 0 4px 24px rgba(201,146,43,0.25);
+  }
+  .btn-primary:hover {
+    background: var(--gold-light); transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(201,146,43,0.4);
+  }
+  .btn-ghost {
+    border: 1px solid rgba(255,255,255,0.2); color: var(--white);
+    padding: 0.9rem 2rem; border-radius: var(--radius);
+    font-size: 0.88rem; letter-spacing: 0.06em; text-transform: uppercase;
+    text-decoration: none;
+    transition: border-color var(--transition), background var(--transition), transform var(--transition);
+  }
+  .btn-ghost:hover {
+    border-color: var(--white); background: rgba(255,255,255,0.06);
+    transform: translateY(-2px);
+  }
+
+  /* HERO STATS */
+  .hero-stats {
+    display: flex; flex-direction: column; gap: 2rem;
+    padding-left: 3rem;
+    border-left: 1px solid rgba(201,146,43,0.25);
+  }
+  .stat-item {}
+  .stat-number {
+    font-family: 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+    font-size: 3.2rem; font-weight: 700; color: var(--white);
+    line-height: 1; display: flex; align-items: flex-start; gap: 0.1em;
+  }
+  .stat-number .suffix { font-size: 1.8rem; color: var(--gold); margin-top: 0.3rem; }
+  .stat-label {
+    font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--grey); margin-top: 0.4rem;
+  }
+  .stat-divider { width: 2rem; height: 1px; background: rgba(201,146,43,0.3); }
+
+  /* SECTIONS */
+  section { padding: 6rem 4rem; }
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+  .eyebrow {
+    font-size: 0.68rem; letter-spacing: 0.32em; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .eyebrow::before { content: ''; width: 1.5rem; height: 1px; background: var(--teal); }
+  .section-title {
+    font-family: 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+    font-size: clamp(2rem, 3.5vw, 2.8rem); font-weight: 700;
+    line-height: 1.2; text-wrap: balance; color: var(--white);
+    margin-bottom: 1.25rem;
+  }
+  .section-body {
+    font-size: 1rem; line-height: 1.8; color: var(--grey-light); max-width: 56ch;
+  }
+
+  /* WHAT WE DO */
+  .what-we-do { background: var(--obsidian); }
+  .wwd-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+    margin-top: 4rem;
+  }
+  .wwd-card {
+    background: var(--steel); border-radius: 8px;
+    padding: 2.5rem; position: relative; overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.06);
+    transition: border-color var(--transition), transform var(--transition);
+  }
+  .wwd-card:hover { border-color: rgba(201,146,43,0.35); transform: translateY(-3px); }
+  .wwd-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+  .wwd-card.teal::before { background: linear-gradient(90deg, var(--teal), transparent); }
+  .wwd-icon {
+    width: 48px; height: 48px; border-radius: 10px;
+    background: var(--teal-dim); display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1.5rem; font-size: 1.4rem;
+  }
+  .wwd-card:not(.teal) .wwd-icon { background: rgba(201,146,43,0.12); }
+  .wwd-title {
+    font-family: 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+    font-size: 1.4rem; font-weight: 700; color: var(--white);
+    margin-bottom: 0.75rem;
+  }
+  .wwd-desc { font-size: 0.92rem; line-height: 1.75; color: var(--grey-light); }
+  .wwd-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+  .tag {
+    font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 0.3rem 0.75rem; border-radius: 100px;
+    border: 1px solid rgba(201,146,43,0.3); color: var(--gold);
+  }
+  .tag.teal-tag { border-color: rgba(20,184,166,0.35); color: var(--teal); }
+
+  /* SERVICES */
+  .services { background: var(--arctic); }
+  .services .eyebrow { color: var(--gold); }
+  .services .eyebrow::before { background: var(--gold); }
+  .services .section-title { color: var(--obsidian); }
+  .services .section-body { color: #4A5068; }
+  .services-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+    margin-top: 3.5rem;
+  }
+  .service-card {
+    background: var(--white); border-radius: 8px; padding: 2rem;
+    border: 1px solid rgba(12,15,26,0.08);
+    transition: box-shadow var(--transition), transform var(--transition), border-color var(--transition);
+    position: relative; overflow: hidden;
+  }
+  .service-card:hover {
+    box-shadow: 0 12px 40px rgba(12,15,26,0.12);
+    transform: translateY(-4px); border-color: rgba(201,146,43,0.3);
+  }
+  .service-number {
+    font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1rem; font-weight: 700;
+  }
+  .service-name {
+    font-family: 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+    font-size: 1.15rem; font-weight: 700; color: var(--obsidian);
+    margin-bottom: 0.75rem; line-height: 1.3;
+  }
+  .service-desc { font-size: 0.88rem; line-height: 1.7; color: #5A6080; }
+  .service-arrow {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--gold); margin-top: 1.25rem; text-decoration: none;
+    font-weight: 600; transition: gap var(--transition);
+  }
+  .service-arrow:hover { gap: 0.7rem; }
+
+  /* WHY INVICTUS */
+  .why { background: var(--steel); }
+  .why-grid {
+    display: grid; grid-template-columns: 1fr 1.2fr; gap: 5rem;
+    align-items: center; margin-top: 1rem;
+  }
+  .why-left .section-title { color: var(--white); }
+  .why-left .section-body { color: var(--grey-light); margin-bottom: 2rem; }
+  .why-pillars { display: flex; flex-direction: column; gap: 1.5rem; }
+  .pillar {
+    display: flex; gap: 1.25rem; align-items: flex-start;
+    padding: 1.25rem; border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.06);
+    background: rgba(255,255,255,0.03);
+    transition: border-color var(--transition), background var(--transition);
+  }
+  .pillar:hover { border-color: rgba(20,184,166,0.3); background: var(--teal-dim); }
+  .pillar-icon {
+    width: 40px; height: 40px; min-width: 40px; border-radius: 8px;
+    background: var(--teal-dim); display: flex; align-items: center;
+    justify-content: center; font-size: 1.1rem;
+  }
+  .pillar-title {
+    font-weight: 700; font-size: 0.9rem; color: var(--white);
+    margin-bottom: 0.35rem; letter-spacing: 0.02em;
+  }
+  .pillar-desc { font-size: 0.85rem; line-height: 1.65; color: var(--grey-light); }
+  .why-visual {
+    position: relative;
+  }
+  .why-quote-box {
+    background: var(--obsidian); border-radius: 12px;
+    padding: 3rem; border: 1px solid rgba(201,146,43,0.2);
+    position: relative;
+  }
+  .why-quote-box::before {
+    content: '\201C';
+    font-family: 'Palatino Linotype', Palatino, Georgia, serif;
+    font-size: 8rem; line-height: 0.8; color: var(--gold);
+    opacity: 0.3; position: absolute; top: 1.5rem; left: 2rem;
+  }
+  .why-quote {
+    font-family: 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+    font-size: 1.3rem; line-height: 1.6; color: var(--white);
+    font-style: italic; position: relative; z-index: 1;
+  }
+  .why-quote-attr {
+    margin-top: 1.5rem; font-size: 0.75rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--gold);
+  }
+  .why-badge {
+    position: absolute; bottom: -1.5rem; right: 2rem;
+    background: var(--gold); color: var(--obsidian);
+    border-radius: 100px; padding: 0.6rem 1.5rem;
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; white-space: nowrap;
+  }
+
+  /* CTA STRIP */
+  .cta-strip {
+    background: linear-gradient(135deg, var(--gold) 0%, #A87520 100%);
+    padding: 5rem 4rem; text-align: center;
+  }
+  .cta-strip .section-inner { display: flex; flex-direction: column; align-items: center; }
+  .cta-strip h2 {
+    font-family: 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+    font-size: clamp(2rem, 4vw, 3rem); font-weight: 700;
+    color: var(--obsidian); text-wrap: balance; margin-bottom: 1rem;
+  }
+  .cta-strip p {
+    font-size: 1.05rem; color: rgba(12,15,26,0.75); max-width: 52ch;
+    line-height: 1.75; margin-bottom: 2.5rem;
+  }
+  .btn-dark {
+    background: var(--obsidian); color: var(--white);
+    padding: 1rem 2.5rem; border-radius: var(--radius);
+    font-weight: 700; font-size: 0.88rem; letter-spacing: 0.08em;
+    text-decoration: none; text-transform: uppercase;
+    transition: background var(--transition), transform var(--transition);
+  }
+  .btn-dark:hover { background: var(--steel); transform: translateY(-2px); }
+
+  /* CONTACT */
+  .contact { background: var(--obsidian); }
+  .contact-grid {
+    display: grid; grid-template-columns: 1fr 1.2fr; gap: 5rem;
+    align-items: start; margin-top: 3.5rem;
+  }
+  .contact-info h3 {
+    font-family: 'Palatino Linotype', Palatino, Georgia, serif;
+    font-size: 1.6rem; font-weight: 700; color: var(--white); margin-bottom: 1rem;
+  }
+  .contact-info p { font-size: 0.95rem; line-height: 1.8; color: var(--grey-light); margin-bottom: 2rem; }
+  .contact-detail {
+    display: flex; gap: 1rem; align-items: center;
+    padding: 1rem 0; border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .contact-detail-icon { font-size: 1.1rem; width: 2rem; text-align: center; }
+  .contact-detail-text { font-size: 0.88rem; color: var(--grey-light); }
+  .contact-detail-text a { color: var(--teal); text-decoration: none; }
+  .contact-detail-text a:hover { text-decoration: underline; }
+
+  .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  .form-label {
+    font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--grey); font-weight: 600;
+  }
+  .form-input, .form-select, .form-textarea {
+    background: var(--steel); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius); padding: 0.85rem 1rem;
+    color: var(--white); font-size: 0.92rem; font-family: inherit;
+    transition: border-color var(--transition);
+    outline: none; width: 100%;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: var(--teal);
+  }
+  .form-input::placeholder, .form-textarea::placeholder { color: var(--grey); }
+  .form-select { appearance: none; cursor: pointer; }
+  .form-select option { background: var(--steel); }
+  .form-textarea { resize: vertical; min-height: 120px; }
+  .form-submit {
+    background: var(--gold); color: var(--obsidian);
+    border: none; border-radius: var(--radius);
+    padding: 1rem 2rem; font-size: 0.88rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    cursor: pointer; font-family: inherit;
+    transition: background var(--transition), transform var(--transition);
+    align-self: flex-start;
+  }
+  .form-submit:hover { background: var(--gold-light); transform: translateY(-2px); }
+  .form-submit:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
+
+  /* FOOTER */
+  footer {
+    background: var(--obsidian); padding: 2.5rem 4rem;
+    border-top: 1px solid rgba(255,255,255,0.07);
+  }
+  .footer-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 2rem; flex-wrap: wrap;
+  }
+  .footer-logo { font-family: 'Palatino Linotype', Palatino, Georgia, serif; }
+  .footer-logo-name { font-size: 1rem; font-weight: 700; letter-spacing: 0.1em; color: var(--white); text-transform: uppercase; }
+  .footer-logo-sub { font-size: 0.58rem; letter-spacing: 0.25em; color: var(--gold); text-transform: uppercase; margin-top: 2px; }
+  .footer-links { display: flex; gap: 2rem; flex-wrap: wrap; }
+  .footer-links a { font-size: 0.78rem; color: var(--grey); text-decoration: none; letter-spacing: 0.06em; transition: color var(--transition); }
+  .footer-links a:hover { color: var(--white); }
+  .footer-copy { font-size: 0.72rem; color: var(--grey); letter-spacing: 0.04em; }
+
+  /* ANIMATIONS */
+  .reveal {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 4rem 1.5rem; }
+    .hero { padding: 7rem 1.5rem 4rem; }
+    .hero-inner, .wwd-grid, .why-grid, .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .services-grid { grid-template-columns: 1fr 1fr; }
+    .hero-stats { padding-left: 0; border-left: none; border-top: 1px solid rgba(201,146,43,0.25); padding-top: 2rem; flex-direction: row; flex-wrap: wrap; gap: 2rem; }
+    .cta-strip { padding: 4rem 1.5rem; }
+    footer { padding: 2rem 1.5rem; }
+    .footer-inner { flex-direction: column; align-items: flex-start; gap: 1.25rem; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <span class="nav-logo-name">SNR Invictus Capital</span>
+    <span class="nav-logo-sub">Capital &middot; Strategy &middot; Systems</span>
+  </div>
+  <div class="nav-links">
+    <a href="#services">Services</a>
+    <a href="#about">Why Invictus</a>
+    <a href="#contact">Contact</a>
+    <a href="mailto:info@snrinvictuscapital.com" class="nav-cta">Engage Us</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-label">SNR Invictus Capital</div>
+      <h1 class="hero-headline">
+        Built to Be<br><em>Unconquered.</em>
+      </h1>
+      <p class="hero-body">
+        We deploy capital, sharpen systems, and build the financial foundations that let businesses stop surviving and start compounding. Consulting and investment under one disciplined roof.
+      </p>
+      <div class="hero-actions">
+        <a href="mailto:info@snrinvictuscapital.com" class="btn-primary">Start a Conversation</a>
+        <a href="#services" class="btn-ghost">Our Services</a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-number">
+          <span class="count" data-target="15">0</span><span class="suffix">+</span>
+        </div>
+        <div class="stat-label">Years of Combined Expertise</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <div class="stat-number">
+          <span class="count" data-target="40">0</span><span class="suffix">+</span>
+        </div>
+        <div class="stat-label">Businesses Advised & Invested In</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <div class="stat-number">
+          <span class="count" data-target="3">0</span><span class="suffix">x</span>
+        </div>
+        <div class="stat-label">Average Portfolio Growth Multiple</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT WE DO -->
+<section class="what-we-do" id="about">
+  <div class="section-inner">
+    <div class="eyebrow reveal">What We Do</div>
+    <h2 class="section-title reveal reveal-delay-1">Two disciplines.<br>One unified edge.</h2>
+    <p class="section-body reveal reveal-delay-2">
+      Most firms choose one lane. We operate at the intersection of strategic consulting and active investment -- because the best advice is backed by capital, and the best capital is guided by strategy.
+    </p>
+    <div class="wwd-grid">
+      <div class="wwd-card reveal reveal-delay-1">
+        <div class="wwd-icon">&#9881;</div>
+        <div class="wwd-title">Consulting</div>
+        <p class="wwd-desc">We embed inside your business to rebuild the systems and financial architecture that determine whether you scale or stall. Not a slide deck -- an operating transformation.</p>
+        <div class="wwd-tags">
+          <span class="tag">Systems Design</span>
+          <span class="tag">Financial Strategy</span>
+          <span class="tag">Process Optimization</span>
+          <span class="tag">Business Development</span>
+        </div>
+      </div>
+      <div class="wwd-card teal reveal reveal-delay-2">
+        <div class="wwd-icon">&#127968;</div>
+        <div class="wwd-title">Investment</div>
+        <p class="wwd-desc">We invest in property and high-potential small businesses, bringing capital and hands-on operational expertise that most investors cannot offer. We grow with you.</p>
+        <div class="wwd-tags">
+          <span class="tag teal-tag">Property Acquisition</span>
+          <span class="tag teal-tag">Small Business Investment</span>
+          <span class="tag teal-tag">Portfolio Growth</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="section-inner">
+    <div class="eyebrow reveal">Our Services</div>
+    <h2 class="section-title reveal reveal-delay-1">Every engagement is built for outcomes, not optics.</h2>
+    <p class="section-body reveal reveal-delay-2">We do not offer one-size-fits-all engagements. We structure each relationship around what your business actually needs to move forward.</p>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-number">01 &mdash; Consulting</div>
+        <div class="service-name">Systems Architecture</div>
+        <p class="service-desc">We map, rebuild, and optimize the operational systems that determine your capacity to grow without chaos.</p>
+        <a href="https://maxity.ai" target="_blank" class="service-arrow">Learn More &#8594;</a>
+      </div>
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-number">02 &mdash; Consulting</div>
+        <div class="service-name">Financial Strategy & Advisory</div>
+        <p class="service-desc">From cash flow modeling to capital structuring, we put financial clarity at the center of every business decision.</p>
+        <a href="https://gysio.org" target="_blank" class="service-arrow">Learn More &#8594;</a>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <div class="service-number">03 &mdash; Consulting</div>
+        <div class="service-name">Business Development</div>
+        <p class="service-desc">We identify growth opportunities, build the right partnerships, and create the infrastructure to pursue them without distraction.</p>
+        <a href="https://gysio.org" target="_blank" class="service-arrow">Learn More &#8594;</a>
+      </div>
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-number">04 &mdash; Investment</div>
+        <div class="service-name">Property Investment</div>
+        <p class="service-desc">We acquire and develop residential and commercial properties with a focus on long-term appreciation and reliable income generation.</p>
+        <a href="mailto:info@snrinvictuscapital.com" class="service-arrow">Inquire &#8594;</a>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <div class="service-number">05 &mdash; Investment</div>
+        <div class="service-name">Small Business Capital</div>
+        <p class="service-desc">We invest in small businesses with proven models and strong founders, offering capital alongside strategic guidance.</p>
+        <a href="mailto:info@snrinvictuscapital.com" class="service-arrow">Inquire &#8594;</a>
+      </div>
+      <div class="service-card reveal reveal-delay-3">
+        <div class="service-number">06 &mdash; Investment</div>
+        <div class="service-name">Capital Structuring</div>
+        <p class="service-desc">We help businesses structure their capital stack to attract investment, reduce risk, and position for the next stage of growth.</p>
+        <a href="mailto:info@snrinvictuscapital.com" class="service-arrow">Inquire &#8594;</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY INVICTUS -->
+<section class="why">
+  <div class="section-inner">
+    <div class="why-grid">
+      <div class="why-left">
+        <div class="eyebrow reveal">Why Invictus</div>
+        <h2 class="section-title reveal reveal-delay-1">We do not consult from a distance.</h2>
+        <p class="section-body reveal reveal-delay-2">The firms that change businesses are the ones with skin in the game. We bring our capital, our systems, and our full attention -- not a framework and an invoice.</p>
+        <div class="why-pillars">
+          <div class="pillar reveal reveal-delay-1">
+            <div class="pillar-icon">&#128200;</div>
+            <div>
+              <div class="pillar-title">Capital-Backed Advice</div>
+              <p class="pillar-desc">Our consulting recommendations are shaped by real investment experience. We have owned what we advise on.</p>
+            </div>
+          </div>
+          <div class="pillar reveal reveal-delay-2">
+            <div class="pillar-icon">&#128101;</div>
+            <div>
+              <div class="pillar-title">Hands-On Partnership</div>
+              <p class="pillar-desc">We do not hand off deliverables and disappear. We stay in the work until the outcomes are real.</p>
+            </div>
+          </div>
+          <div class="pillar reveal reveal-delay-3">
+            <div class="pillar-icon">&#128736;</div>
+            <div>
+              <div class="pillar-title">Systems-First Thinking</div>
+              <p class="pillar-desc">Every recommendation we make is designed to be operational -- built into how your business runs, not added on top of it.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="why-visual reveal reveal-delay-2">
+        <div class="why-quote-box">
+          <p class="why-quote">The goal is not to survive the market. The goal is to build something the market cannot touch.</p>
+          <div class="why-quote-attr">SNR Invictus Capital</div>
+        </div>
+        <div class="why-badge">Consulting + Capital</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA STRIP -->
+<section class="cta-strip">
+  <div class="section-inner">
+    <h2 class="reveal">Ready to build something unconquered?</h2>
+    <p class="reveal reveal-delay-1">Whether you need a strategic overhaul, a capital partner, or both -- the conversation starts here. No obligation, no pressure. Just clarity.</p>
+    <a href="mailto:info@snrinvictuscapital.com" class="btn-dark reveal reveal-delay-2">Schedule a Discovery Call</a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="section-inner">
+    <div class="eyebrow reveal">Contact</div>
+    <h2 class="section-title reveal reveal-delay-1">Let's talk about what's possible.</h2>
+    <div class="contact-grid">
+      <div class="contact-info reveal reveal-delay-1">
+        <h3>Get in Touch</h3>
+        <p>We take on a limited number of engagements each quarter to ensure every client receives full attention. Reach out early to discuss your situation and whether we are the right fit.</p>
+        <div class="contact-detail">
+          <span class="contact-detail-icon">&#9993;</span>
+          <div class="contact-detail-text">
+            General Inquiries: <a href="mailto:info@snrinvictuscapital.com">info@snrinvictuscapital.com</a>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <span class="contact-detail-icon">&#127758;</span>
+          <div class="contact-detail-text">San Diego County, California</div>
+        </div>
+        <div class="contact-detail">
+          <span class="contact-detail-icon">&#128197;</span>
+          <div class="contact-detail-text">Engagements open quarterly &mdash; inquire for current availability</div>
+        </div>
+      </div>
+      <form class="contact-form reveal reveal-delay-2" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="fname">First Name</label>
+            <input class="form-input" type="text" id="fname" name="fname" placeholder="Your first name" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="lname">Last Name</label>
+            <input class="form-input" type="text" id="lname" name="lname" placeholder="Your last name" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="email">Email Address</label>
+          <input class="form-input" type="email" id="email" name="email" placeholder="your@email.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="interest">Area of Interest</label>
+          <select class="form-select form-input" id="interest" name="interest">
+            <option value="">Select a service area</option>
+            <option>Systems Consulting</option>
+            <option>Financial Strategy & Advisory</option>
+            <option>Business Development</option>
+            <option>Property Investment</option>
+            <option>Small Business Capital</option>
+            <option>Capital Structuring</option>
+            <option>Multiple / Not Sure Yet</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="message">Tell Us About Your Situation</label>
+          <textarea class="form-textarea" id="message" name="message" placeholder="What are you working toward, and what's in your way?"></textarea>
+        </div>
+        <button type="submit" class="form-submit">Send Inquiry</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <div class="footer-logo-name">SNR Invictus Capital</div>
+      <div class="footer-logo-sub">Capital &middot; Strategy &middot; Systems</div>
+    </div>
+    <div class="footer-links">
+      <a href="#services">Services</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="footer-copy">&copy; 2026 SNR Invictus Capital. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+// Hero canvas — capital flow network
+(function() {
+  const canvas = document.getElementById('hero-canvas');
+  const ctx = canvas.getContext('2d');
+  let nodes = [], W, H, raf;
+
+  function resize() {
+    W = canvas.width = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+
+  function initNodes(n) {
+    nodes = [];
+    for (let i = 0; i < n; i++) {
+      nodes.push({
+        x: Math.random() * W, y: Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.35,
+        vy: (Math.random() - 0.5) * 0.35,
+        r: Math.random() * 2 + 1
+      });
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    const LINK_DIST = 160;
+    nodes.forEach(n => {
+      n.x += n.vx; n.y += n.vy;
+      if (n.x < 0 || n.x > W) n.vx *= -1;
+      if (n.y < 0 || n.y > H) n.vy *= -1;
+    });
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const dx = nodes[i].x - nodes[j].x;
+        const dy = nodes[i].y - nodes[j].y;
+        const d = Math.sqrt(dx * dx + dy * dy);
+        if (d < LINK_DIST) {
+          const alpha = (1 - d / LINK_DIST) * 0.35;
+          ctx.beginPath();
+          ctx.moveTo(nodes[i].x, nodes[i].y);
+          ctx.lineTo(nodes[j].x, nodes[j].y);
+          ctx.strokeStyle = `rgba(201,146,43,${alpha})`;
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
+        }
+      }
+    }
+    nodes.forEach(n => {
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(201,146,43,0.55)';
+      ctx.fill();
+    });
+    raf = requestAnimationFrame(draw);
+  }
+
+  resize();
+  initNodes(55);
+  draw();
+  window.addEventListener('resize', () => { resize(); initNodes(55); });
+})();
+
+// Counter animation
+function animateCounter(el, target, duration) {
+  let start = null;
+  function step(ts) {
+    if (!start) start = ts;
+    const progress = Math.min((ts - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.floor(ease * target);
+    if (progress < 1) requestAnimationFrame(step);
+    else el.textContent = target;
+  }
+  requestAnimationFrame(step);
+}
+
+// Scroll reveal
+const revealEls = document.querySelectorAll('.reveal');
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
+}, { threshold: 0.12 });
+revealEls.forEach(el => revealObs.observe(el));
+
+// Counter trigger on hero
+const counters = document.querySelectorAll('.count');
+const counterObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      animateCounter(e.target, parseInt(e.target.dataset.target), 1800);
+      counterObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.5 });
+counters.forEach(c => counterObs.observe(c));
+
+// Form submit
+function handleSubmit(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('.form-submit');
+  btn.textContent = 'Inquiry Sent!';
+  btn.style.background = '#14B8A6';
+  btn.style.color = '#fff';
+  setTimeout(() => { btn.textContent = 'Send Inquiry'; btn.style.background = ''; btn.style.color = ''; }, 3500);
+}
+</script>
